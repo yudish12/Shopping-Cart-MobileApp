@@ -15,6 +15,7 @@ const ProductCard = ({product}: {product: ProductType}) => {
   }>();
 
   const state = useContext(CartContext);
+  const isFav = state?.favProducts.find(e => e.id === product.id);
 
   const handlePress = () => {
     state?.addToCart(product);
@@ -26,9 +27,16 @@ const ProductCard = ({product}: {product: ProductType}) => {
       onPress={() => navigation.navigate('product', {productId: product.id})}
       style={styles.cardContainer}>
       <View style={styles.innerContainer}>
-        <View>
-          <Icon style={styles.heartIcons} name="heart" />
-        </View>
+        <Pressable
+          onPress={() =>
+            !isFav ? state?.addToFav(product) : state?.removeFromFav(product)
+          }
+          style={{width: 45}}>
+          <Icon
+            style={isFav ? styles.heartIconsYes : styles.heartIconsNo}
+            name={!isFav ? 'hearto' : 'heart'}
+          />
+        </Pressable>
         <View style={{alignItems: 'center', padding: 10}}>
           <Image
             style={{width: 100, height: 100, borderRadius: 12}}
@@ -73,11 +81,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginRight: 20,
   },
-  heartIcons: {
+  heartIconsYes: {
     fontSize: 20,
     marginTop: 10,
     marginLeft: 10,
     color: '#FF8181',
+  },
+  heartIconsNo: {
+    fontSize: 20,
+    marginTop: 10,
+    marginLeft: 10,
   },
   ImageIcons: {
     fontSize: 80,

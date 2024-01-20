@@ -16,7 +16,6 @@ import OctIcon from 'react-native-vector-icons/Octicons';
 const Cart = () => {
   const context = useContext(CartContext);
   const navigation = useNavigation<any>();
-  console.log(context?.cartProducts, 7);
   return (
     <View
       style={{

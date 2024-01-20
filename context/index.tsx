@@ -61,7 +61,6 @@ const CartProvider = ({children}: {children: React.ReactNode}) => {
 
   const addToCart = (product: ProductType) =>
     setCartProducts(prev => {
-      console.log(49);
       const updatedCart: CartType = JSON.parse(JSON.stringify(prev));
       const existingProduct = updatedCart.cartProducts.find(
         cartProduct => cartProduct.id === product.id,
@@ -72,23 +71,19 @@ const CartProvider = ({children}: {children: React.ReactNode}) => {
         existingProduct.quantity++;
       } else {
         // Product doesn't exist in the cart, add it
-        updatedCart.cartProducts.push({
-          ...product,
-          quantity: 1, // Set initial quantity to 1
-        });
+        const obj = {...product, quantity: 1};
+        updatedCart.cartProducts = [...updatedCart.cartProducts, obj];
       }
 
       // Update totalQuantity and totalPrice
       updatedCart.totalQuantity++;
       updatedCart.totalPrice += product.price;
-      console.log(updatedCart, 68);
 
       return updatedCart;
     });
 
   const removeFromCart = (product: ProductType) =>
     setCartProducts(prev => {
-      console.log(49);
       const updatedCart: CartType = JSON.parse(JSON.stringify(prev));
       const existingProduct = updatedCart.cartProducts.find(
         cartProduct => cartProduct.id === product.id,
@@ -111,7 +106,6 @@ const CartProvider = ({children}: {children: React.ReactNode}) => {
       // Update totalQuantity and totalPrice
       updatedCart.totalQuantity--;
       updatedCart.totalPrice -= product.price;
-      console.log(updatedCart, 68);
 
       return updatedCart;
     });

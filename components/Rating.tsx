@@ -4,7 +4,6 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const Rating = ({rating}: {rating: number | undefined}) => {
-  console.log(rating);
   if (!rating) {
     return <Text>Rating not defined</Text>;
   }

@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Anticon from 'react-native-vector-icons/AntDesign';
 import Rating from '../components/Rating';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {CartContext, ProductType} from '../context';
@@ -31,9 +32,7 @@ const Product = () => {
     try {
       const res = await fetch(`https://dummyjson.com/products/${productId}`);
       const resp = await res.json();
-      console.log(resp);
       if (res.status === 200) {
-        console.log(resp);
         setProduct(resp);
       }
     } catch (error) {
@@ -44,6 +43,7 @@ const Product = () => {
   };
 
   const state = useContext(CartContext);
+  const isFav = state?.favProducts.find(e => e.id === product?.id);
 
   const handlePress = () => {
     if (product) {
@@ -54,7 +54,6 @@ const Product = () => {
 
   useEffect(() => {
     if (productId) {
-      console.log('asd');
       getProductInfo();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -138,6 +137,16 @@ const Product = () => {
         <Rating rating={product?.rating} />
       </View>
       <View style={styles.imageContainer}>
+        <Pressable
+          style={styles.favIconContainer}
+          onPress={() =>
+            !isFav ? state?.addToFav(product) : state?.removeFromFav(product)
+          }>
+          <Anticon
+            style={isFav ? styles.heartIconsYes : styles.heartIconsNo}
+            name={!isFav ? 'hearto' : 'heart'}
+          />
+        </Pressable>
         <Image
           style={{width: 300, height: 300, borderRadius: 12}}
           source={{
@@ -231,6 +240,24 @@ const styles = StyleSheet.create({
   imageContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'relative',
+  },
+  favIconContainer: {
+    position: 'absolute',
+    right: 70,
+    top: 0,
+    zIndex: 20,
+  },
+  heartIconsYes: {
+    fontSize: 20,
+    marginTop: 10,
+    marginLeft: 10,
+    color: '#FF8181',
+  },
+  heartIconsNo: {
+    fontSize: 20,
+    marginTop: 10,
+    marginLeft: 10,
   },
   details: {
     padding: 20,
